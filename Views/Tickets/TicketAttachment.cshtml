@@ -1,0 +1,13 @@
+﻿@model BugTracker2.Models.Ticket
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+
+<div style="width: 100%;font-size: 2em; margin: 50px; text-align: center;">
+    @ViewBag.SystemMessage
+    <br />
+    @Html.ActionLink("Return to ticket","Details", new { id = Model.Id })
+</div>

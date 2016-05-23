@@ -1,0 +1,197 @@
+﻿@model BugTracker2.Models.TicketViewModel
+
+@{
+    ViewBag.Title = "Ticket Detail View";
+}
+
+<h3>@ViewBag.SystemMessage</h3>
+
+<span style="font-size: 1.75em; background-color: none;">[Status: @Html.Raw(Model.TicketStatusName)] @Html.Raw(Model.Title)</span>
+<br />
+<ul class="DetailNavbar">
+    
+    <li id="DetailsTab" class="DetailNavActive"><a href="#" onclick="openTab('Details','DetailsTab')">Details</a></li>
+    <li id="HistoryTab" class="DetailNavInactive"><a href="#" onclick="openTab('History','HistoryTab')">History</a></li>
+    <li id="Comment-attachTab" class="DetailNavInactive"><a href="#" onclick="openTab('Comment-attach','Comment-attachTab')">Comment or attach a file</a></li>
+    @if (ViewBag.ShowEditButton)
+    {
+    <li class="DetailNavInactive" style="background-color: #F0F0F0;">@Html.ActionLink("Edit ticket", "EditTicket", new { id = Model.TicketId })</li>
+    }
+</ul>
+<br />
+
+
+
+<div id="Details" class="tabName">
+    <span style="font-size: 1.75em">Ticket Details</span>
+    <br />
+        Submitted by <b>@Html.Raw(Model.OwnerUserDisplayName)</b> at time <b>@Html.Raw(Model.Created)</b>
+        <br />
+        Regarding project: <b>@Html.Raw(Model.ProjectName)</b>
+        <br />
+        Type: <b>@Html.Raw(Model.TicketTypeName)</b>
+        <br />
+        Priority: <b>@Html.Raw(Model.TicketPriorityName)</b>
+        <br />
+        Assigned developer: <b>@Html.Raw(Model.AssignedToUserDisplayName)</b>
+        <br />
+        <br />
+    <h3>Ticket Body</h3>
+    <div class="TicketBody">
+        @Html.Raw(Model.Description)
+
+    </div>
+
+    <br />
+
+    <br />
+
+<h3>Comments</h3>
+
+    @if (Model.TicketComments.Count == 0)
+    {
+        <h4 style="color: gray";>No comments yet.</h4>
+    }
+    @foreach (var item in Model.TicketComments)
+    {
+
+        <div class="TicketComment">
+            At @Html.Raw(item.Created.LocalDateTime), <b>@Html.Raw(item.UserDisplayName)</b> said:
+            <br />
+            <b>@Html.Raw(item.Body)</b>
+
+        </div>
+
+    }
+
+<br />
+<h3>Attachments</h3>
+
+    @if (Model.TicketAttachments.Count == 0)
+    {
+        <h4 style="color: gray";>No attachments yet.</h4>
+    }
+
+@foreach (var item in Model.TicketAttachments)
+{    
+    <div class="TicketAttachment">
+        
+        Filename: @*There is a space after "Filename:"....just to be clear*@
+        <b>
+            <a href="@Url.Content(item.FileUrl)">
+                @Html.Raw(item.FileName)
+            </a>
+        </b>
+        <br />
+        Description: <b>@Html.Raw(item.Description)</b>
+        <br />
+        Uploader: <b>@Html.Raw(item.UploaderDisplayName)</b>
+        <br />
+        When: @Html.Raw(item.Created.LocalDateTime)
+        <br />
+        <b>
+            <a href="@Url.Content(item.FileUrl)">Download File</a>
+        </b>
+    </div>
+}
+
+
+    </div>
+
+<div id="History" class="tabName">
+
+
+    @foreach (var item in Model.TicketHistories)
+    {
+        <div class="TicketHistory">
+            Action:
+            <b>
+                @Html.Raw(item.Property)
+                @if (item.OldValue != null || item.NewValue != null)
+                {
+                    @Html.Raw(" changed")
+                }
+            </b>
+            <br />
+            User: <b>@Html.Raw(item.UserDisplayName)</b>
+            <br />
+            When: @Html.Raw(item.DateTime.LocalDateTime)
+            
+
+            @if (item.NewValue != null)
+            {
+                <br />
+                @Html.Raw("New value: ")
+                <b>
+                    @Html.Raw(item.NewValue)
+                </b>
+            }
+
+            @if (item.OldValue != null)
+            {
+                <br />
+                @Html.Raw("Previous value: ")
+                <b>
+                    @Html.Raw(item.OldValue)
+                </b>
+                @*These are on different lines so you can style OldValue if you please*@
+            }
+            
+        </div>
+    
+
+
+            }
+
+
+
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+</div>
+
+<div id="Comment-attach" class="tabName">
+    @if (ViewBag.ShowForms != false)
+                            {
+        <span style="font-size: 1.75em;">Add a comment</span>
+        <div class="UploadAttachForm">
+            @using (Html.BeginForm("TicketComment", "Tickets", FormMethod.Post))
+            {
+
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+
+                <input type="hidden" name="TicketId" value="@Model.TicketId" />
+                <input type="text" name="Body" class="form-control" placeholder="Comment">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" id="submit-button">Post comment</button>
+
+            }
+        </div>
+    }
+
+    <br />
+
+    @if (ViewBag.ShowForms != false)
+                    {
+        <h3>Upload an attachment</h3>
+        <div class="UploadAttachForm">
+            @using (Html.BeginForm("TicketAttachment", "Tickets", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+            {
+            <div class="form-group">
+                <input id="AttachmentDescription" type="text" name="Description" class="form-control" placeholder="Description">
+                <input name="file" type="file" class="form-control" id="fileUpload" />
+                <input type="hidden" name="TicketId" value="@Model.TicketId" />
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg" id="submit-button">Upload</button>
+
+            }
+        </div>
+    }
+    else
+    {
+        <h4>You have insufficent permissions to add a comment or attachment.</h4>
+    }
+ </div>

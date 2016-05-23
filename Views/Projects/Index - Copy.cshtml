@@ -1,0 +1,38 @@
+﻿@model IEnumerable<BugTracker2.Models.Project>
+
+@{
+    ViewBag.Title = "List of Projects";
+}
+
+<h2>@ViewBag.Title</h2>
+<span>@Html.ActionLink("Create new project", "CreateProject" )</span>
+<br />
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.Name)
+            </td>
+            <td>
+                @Html.ActionLink("Edit project", "EditProject", new { id = item.Id }) 
+                <br />
+                @Html.ActionLink("Edit users", "EditProjectUsers", new { id = item.Id })
+                <br />
+                @Html.ActionLink("Delete project","DeleteProject", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>

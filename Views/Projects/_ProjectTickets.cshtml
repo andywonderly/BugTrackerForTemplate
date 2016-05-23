@@ -1,0 +1,13 @@
+﻿@model IEnumerable<BugTracker2.Models.Ticket>
+
+
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Title, "Details", "Tickets", new { id = item.Id }, new { })
+                </td>
+            </tr>
+        }

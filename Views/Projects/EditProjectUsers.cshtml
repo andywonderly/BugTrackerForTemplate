@@ -1,0 +1,30 @@
+﻿@model BugTracker2.Models.ProjectUserViewModel
+
+@{
+    ViewBag.Title = "Edit Project Users";
+}
+
+<h2>@ViewBag.Title</h2>
+<h2>Project name: @Model.Name</h2>
+
+
+
+@using (Html.BeginForm("EditProjectUsers", "Projects", FormMethod.Post))
+{
+
+    @Html.AntiForgeryToken()
+
+    <div>
+        @Html.ListBoxFor(x => x.selected, Model.users, new { size = 10 })
+        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => Model.Name)
+
+        <input type="submit" value="Submit" />
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to project list", "Index")
+</div>
+
+

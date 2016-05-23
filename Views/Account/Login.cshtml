@@ -1,0 +1,184 @@
+﻿@using BugTracker2.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Bugtracker";
+}
+
+@*<h2>@ViewBag.Title.</h2>*@
+<br />
+
+<h2>Welcome to Bugtracker!</h2>
+<h4>
+    Bugtracker is a fast, secure, and feature-packed help-ticket submission system built in Microsoft
+    ASP .NET and Microsoft SQL.  Using the latest MVC technology, Bugtracker aims to provide the best in
+    functionality and security.  Please log in to the system, create your own account, or
+    try out Bugtracker using the demonstration modules below.
+</h4>
+
+<div class="row">
+    <div class="col-md-offset-4 col-md-2 TechItem">
+        <span>C#</span>
+    </div>
+    <div class="col-md-2 TechItem">
+        <span>ASP .NET</span>
+    </div>
+    <div class="col-md-2 TechItem">
+        <span>MS SQL SERVER</span>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3 DemoModule">
+        <h4>Administrator module</h4>
+        <ul style="padding-left: 15px;">
+            <li>Create and edit users</li>
+            <li>Create and edit projects</li>
+            <li>Assign users to projects</li>
+            <li>Create and edit tickets</li>
+            <li>Access to all parts of system</li>
+        </ul>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="hidden" name="Email" value="AdminDemo@awonderly-bugtracker.com" />
+            <input type="hidden" name="Password" value="Sillystuff2#" />
+            <input type="submit" class="btn btn-lg" value="Demo as Admininstrator" style="width: 100%;" />
+        }
+    </div>
+    <div class="col-md-3 DemoModule">
+        <h4>Project Manager module</h4>
+        <ul style="padding-left: 15px;">
+            <li>Edit project info</li>
+            <li>Edit project users</li>
+            <li>View and edit tickets</li>
+            <li>Assign users to tickets</li>
+            <li>Alerts on project changes</li>
+        </ul>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="hidden" name="Email" value="ProjectManagerDemo@awonderly-bugtracker.com" />
+            <input type="hidden" name="Password" value="Sillystuff2#" />
+            <input type="submit" class="btn btn-lg" value="Demo as Project Manager" style="width: 100%;" />
+        }
+    </div>
+    <div class="col-md-3 DemoModule">
+        <h4>Developer module</h4>
+        <ul style="padding-left: 15px;">
+            <li>View your projects</li>
+            <li>View project tickets</li>
+            <li>View your assigned tickets</li>
+            <li>Communicate with submitters</li>
+            <li>Alerts on ticket assignment</li>
+        </ul>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="hidden" name="Email" value="DeveloperDemo@awonderly-bugtracker.com" />
+            <input type="hidden" name="Password" value="Sillystuff2#" />
+            <input type="submit" class="btn btn-lg" value="Demo as Developer" style="width: 100%;" />
+        }
+    </div>
+    <div class="col-md-3 DemoModule">
+        <h4>Submitter module</h4>
+        <ul style="padding-left: 15px;">
+            <li>Submit help tickets</li>
+            <li>View your tickets</li>
+            <li>Add comments/li>
+            <li>Communicate with support</li>
+            <li>Edit your user info</li>
+        </ul>
+
+        @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <input type="hidden" name="Email" value="SubmitterDemo@awonderly-bugtracker.com" />
+            <input type="hidden" name="Password" value="Sillystuff2#" />
+            <input type="submit" class="btn btn-lg" value="Demo as Submitter" style="width: 100%;" />
+        }
+    </div>
+</div>
+
+
+
+
+
+<hr />
+
+
+<div class="row">
+    <div class="col-md-4">
+        <section id="loginForm">
+            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10" style="font-size: 1.3em;">
+                        Use a local account to log in.
+                    </div>
+                </div>
+                    @*<hr />*@
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", @placeholder = "Email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Log in" class="btn btn-default" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            @Html.ActionLink("Register as a new user", "Register") // @Html.ActionLink("Recover password", "ForgotPassword")
+                        </div>
+                    </div>
+                    @* Enable this once you have account confirmation enabled for password reset functionality
+                        <p>
+                            @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                        </p>*@
+            }
+        </section>
+    </div>
+    <div class="col-md-8" style="padding: 0px; margin-top: -10px;">
+        <section id="socialLoginForm">
+            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+        </section>
+    </div>
+</div>
+
+
+
+@*@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}*@

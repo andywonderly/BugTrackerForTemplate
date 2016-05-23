@@ -1,0 +1,112 @@
+﻿@model IEnumerable<BugTracker2.Models.Project>
+
+<style>
+
+    #ProjectListTable {
+        table-layout: fixed;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0px;
+        margin-left: -15px;
+    }
+
+    
+
+    .ProjectTable tbody {
+        margin-left: -15px !important;
+        
+    }
+
+    .ProjectTable tr {
+        margin-left: -15px !important;
+    }
+
+
+
+    
+    .ProjectTable td {
+        border: none !important;
+        margin-left: -15px !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+
+
+
+</style>
+
+@{
+    ViewBag.Title = "Projects";
+}
+
+<h2>@ViewBag.Title</h2>
+<span>@Html.ActionLink("Create new project", "CreateProject" )</span>
+<br />
+<table class="table" id="ProjectListTable">
+    <tr>
+        <th>
+            Project Name
+        </th>
+        <th>
+            Project Users
+        </th>
+        <th>
+            Project Tickets
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a href="#" onclick="toggleDetails(@item.Id);">@Html.Raw(item.Name)</a>
+            </td>
+            <td>
+                <a href="#" onclick="toggleDetails(@item.Id);">Users (@Html.Raw(item.ProjectUsers.Count))</a>
+                <table class="ProjectTable" id="ProjectUsers-@item.Id">
+                    <tbody>
+                        @Html.Action("_ProjectUsers", new { id = item.Id })
+                    </tbody>
+                </table>
+            </td>
+            <td>
+                <a href="#" onclick="toggleDetails(@item.Id);">Tickets (@Html.Raw(item.ProjectTickets.Count))</a>
+                <table class="ProjectTable" id="ProjectTickets-@item.Id">
+                    <tbody>
+                        @Html.Action("_ProjectTickets", new { id = item.Id })       
+                    </tbody>
+                </table>
+
+            </td>
+            <td>
+                @Html.ActionLink("Edit project", "EditProject", new { id = item.Id })
+                <br />
+                @Html.ActionLink("Edit users", "EditProjectUsers", new { id = item.Id })
+                <br />
+                @Html.ActionLink("Delete project", "DeleteProject", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<script>
+    $("footer").remove();
+    $("hr").remove();
+
+    //Hide all project tables initially
+    $(".ProjectTable").toggle();
+
+    function toggleDetails(x)
+    {
+        $("#ProjectUsers-" + x).toggle();
+        $("#ProjectTickets-" + x).toggle();
+    }
+</script>

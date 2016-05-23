@@ -1,0 +1,26 @@
+﻿@model IEnumerable<BugTracker2.Models.ProjectUserViewModel>
+
+@*<ul style="list-style-type: none;">
+    @foreach(var item in Model)
+    {
+        <li>@item.DisplayName @item.Roles</li>
+    }
+</ul>*@
+
+
+
+
+    
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.DisplayName
+                </td>
+                <td>
+                    @item.Roles
+                </td>
+            </tr>
+        }
+
+

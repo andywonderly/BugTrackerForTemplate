@@ -1,0 +1,51 @@
+﻿@model IEnumerable<BugTracker2.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "Users (Admin-only)";
+}
+
+<h2>@ViewBag.Title</h2>
+<table class="table">
+    <tr>
+        <th>
+            Username/email
+        </th>
+        <th>
+            Display Name
+        </th>
+        <th>
+            First Name
+        </th>
+        <th>
+            Last Name
+        </th>
+        <th>
+            Actions
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.DisplayName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(model => item.LastName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit Roles", "EditUser", new { id = item.Id })
+                
+            </td>
+        </tr>
+    }
+
+
+
+</table>

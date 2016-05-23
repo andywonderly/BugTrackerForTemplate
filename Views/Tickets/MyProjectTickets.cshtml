@@ -1,0 +1,139 @@
+﻿@model IEnumerable<BugTracker2.Models.TicketViewModel>
+
+@{
+    ViewBag.Title = "Tickets";
+}
+<!-- jQuery DataTables CSS -->
+<link rel="stylesheet" type="text/css"
+      href="https://cdn.datatables.net/1.10.9/css/jquery.dataTables.min.css" />
+<!-- jQuery -->
+<script type="text/javascript" language="javascript"
+        src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+@*@Scripts.Render("~/bundles/jquery")*@
+
+<!-- DataTables JS-->
+<script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.10.9/js/jquery.dataTables.min.js"></script>
+
+<h2>@ViewBag.Title</h2>
+<div class="TicketMenuInactive">
+    @Html.ActionLink("My Submitted Tickets", "MySubmittedTickets")
+</div>
+<div class="TicketMenuActive">
+    @Html.ActionLink("My Project Tickets", "MyProjectTickets")
+</div>
+@if (ViewContext.HttpContext.User.IsInRole("Admin") || ViewContext.HttpContext.User.IsInRole("Admin Demo"))
+{
+    <div class="TicketMenuInactive">
+        @Html.ActionLink("All Tickets", "AllTickets")
+    </div>
+}
+<div class="TicketMenuInactive">
+    <b>@Html.ActionLink("Create New Ticket", "CreateTicket")</b>
+</div>
+
+<hr />
+
+<table class="table" id="mytable">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Created
+            </th>
+            <th>
+                Updated
+            </th>
+            <th>
+                Project Name
+            </th>
+            <th>
+                Type
+            </th>
+            <th>
+                Priority
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Submitter
+            </th>
+            <th>
+                Assigned Developer
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created.LocalDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated.LocalDateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProjectName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketTypeName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketPriorityName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketStatusName)
+                </td>
+                <td>
+                    @if (item.CurrentUserIsOwner)
+                    {
+                        @:<div style='padding-left: 3px; padding-right: 3px; background-color: lightgray;'>
+                    }
+                    @Html.DisplayFor(modelItem => item.OwnerUserDisplayName)
+                    @if (item.CurrentUserIsOwner)
+                    {
+                        @:</div>
+                    }
+                </td>
+                <td>
+                    @if (item.CurrentUserIsAssignedDev)
+                    {
+                        @:<div style='padding-left: 3px; padding-right: 3px; background-color: lightgray;'>
+                    }
+                    @Html.DisplayFor(modelItem => item.AssignedToUserDisplayName)
+                    @if (item.CurrentUserIsAssignedDev)
+                    {
+                        @:</div>
+                    }
+                    <br />
+                    <p style="color: red;">@Html.DisplayFor(modelItem => item.DevWarning)</p>
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditTicket", new { id = item.Id })
+                    <br />
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                    <br />
+                    @Html.ActionLink("Delete", "DeleteTicket", new { id = item.Id })
+                    <br />
+                    @Html.ActionLink("Assign", "AssignTicket", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>
+
+<script>
+    $('#mytable').DataTable();
+</script>

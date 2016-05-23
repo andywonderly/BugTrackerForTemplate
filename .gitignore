@@ -301,3 +301,5 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+App_Start/Startup.Auth.cs
+Web.config
