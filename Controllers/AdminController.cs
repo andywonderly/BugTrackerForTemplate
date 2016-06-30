@@ -13,7 +13,12 @@ namespace BugTracker2.Controllers
     public class AdminController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-        
+
+        private string AdminDemoId = "6f14712f-952b-4d85-8981-c1fea486113b";
+        private string ProjectManagerDemoId = "c95a057d-4bf5-4f87-b498-dc5a7a7fa975";
+        private string DeveloperDemoId = "48e9707c-91b6-4d6c-bdec-416caba21fa8";
+        private string SubmitterDemoId = "f5969cac-aac0-4e0f-ac4e-1741387eb71f";
+
         // GET: Admin
         [Authorize(Roles = "Admin")]
         public ActionResult Index()
@@ -27,7 +32,8 @@ namespace BugTracker2.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult EditUser(string id)
         {
-            if(id == null)
+
+            if (id == null)
             {
                 RedirectToAction("Index");
             }
@@ -59,6 +65,15 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditUser([Bind(Include="selected, Id, Name, roles")] AdminUserViewModel model)
         {
+            var currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+
+            if (currentUserId == AdminDemoId || currentUserId == ProjectManagerDemoId || currentUserId == DeveloperDemoId
+                || currentUserId == SubmitterDemoId)
+            {
+                return RedirectToAction("Index");
+            }
+
+
             if (ModelState.IsValid)
             {
                 //Declare variable of the application context

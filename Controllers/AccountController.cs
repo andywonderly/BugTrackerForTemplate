@@ -20,6 +20,11 @@ namespace BugTracker2.Controllers
         private ApplicationUserManager _userManager;
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        private string AdminDemoId = "6f14712f-952b-4d85-8981-c1fea486113b";
+        private string ProjectManagerDemoId = "c95a057d-4bf5-4f87-b498-dc5a7a7fa975";
+        private string DeveloperDemoId = "48e9707c-91b6-4d6c-bdec-416caba21fa8";
+        private string SubmitterDemoId = "f5969cac-aac0-4e0f-ac4e-1741387eb71f";
+
         public AccountController()
         {
         }
@@ -82,6 +87,7 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -125,6 +131,7 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -216,6 +223,16 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+
+            var currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+
+            if (currentUserId == AdminDemoId || currentUserId == ProjectManagerDemoId || currentUserId == DeveloperDemoId
+                || currentUserId == SubmitterDemoId)
+            {
+                return View(model);
+            }
+
+
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
@@ -260,6 +277,16 @@ namespace BugTracker2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
+            var currentUserId = System.Web.HttpContext.Current.User.Identity.GetUserId();
+
+            if (currentUserId == AdminDemoId || currentUserId == ProjectManagerDemoId || currentUserId == DeveloperDemoId
+                || currentUserId == SubmitterDemoId)
+            {
+                return View(model);
+            }
+
+
+
             if (!ModelState.IsValid)
             {
                 return View(model);
