@@ -47,6 +47,7 @@ textarea {
     padding: 5px; margin-bottom: 5px;
     border-radius: 5px;
     border: 2px solid #484848;
+    min-height: 96px;
 }
 
 .TicketAttachment {
@@ -56,6 +57,7 @@ textarea {
      margin-bottom: 5px;
      border-radius: 5px;
      border: 2px solid #484848;
+     min-height: 96px;
 }
 
 .TicketHistory {
@@ -64,6 +66,7 @@ textarea {
     padding: 5px; margin-bottom: 5px;
     border-radius: 5px;
     border: 2px solid #484848;
+    min-height: 96px;
 }
 
 .UploadAttachForm {
